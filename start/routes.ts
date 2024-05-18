@@ -26,7 +26,8 @@ router.group(() => {
   router.get('/:id', 'WorkoutsController.show')
   router.put('/:id', 'WorkoutsController.update')
   router.delete('/:id', 'WorkoutsController.delete')
-}).prefix('/workouts').middleware(['auth'])
+}).prefix('/workouts')
+// .middleware(['auth'])
 
 // routers pour les exercices
 router.group(() => {
@@ -35,7 +36,8 @@ router.group(() => {
   router.get('/:id', 'ExercisesController.show')
   router.put('/:id', 'ExercisesController.update')
   router.delete('/:id', 'ExercisesController.delete')
-}).prefix('/exercises').middleware(['auth'])
+}).prefix('/exercises')
+// .middleware(['auth'])
 
 
 
