@@ -8,7 +8,11 @@
 */
 
 import router from '@adonisjs/core/services/router'
+
 const UsersController = () => import('#controllers/UsersController')
+const ExercicesController = () => import('#controllers/UsersController')
 
 router.post('/users', [UsersController, 'store'])
 router.post('/login', [UsersController, 'login'])
+
+router.get('/api/exercices', [ExercicesController, 'index'])
