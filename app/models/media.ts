@@ -30,6 +30,9 @@ export default class Media extends BaseModel {
   }
 
   static async getMedias() {
+    if ((await Media.all()) === null) {
+      return { error: 'No medias found' }
+    }
     return await Media.all()
   }
 

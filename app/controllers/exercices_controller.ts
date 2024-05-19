@@ -1,4 +1,5 @@
 import { HttpContext } from '@adonisjs/core/http'
+import Media from '#models/media'
 
 /**
  * ExercicesController is a class that handles HTTP requests related to exercices.
@@ -13,7 +14,8 @@ export default class ExercicesController {
    */
   async index({}: HttpContext) {
     // Return a list of all exercices
-
+    console.log('Returning a list of all exercices...')
+    return await Media.getMedias()
   }
 
   /**
@@ -31,7 +33,7 @@ export default class ExercicesController {
    * @param {HttpContext} ctx - The HTTP context.
    * @param {Object} request - The HTTP request.
    */
-  async store({ request }: HttpContext) {}
+  // async store({ request }: HttpContext) {}
 
   /**
    * Handles GET requests to /exercices/:id.
@@ -40,7 +42,7 @@ export default class ExercicesController {
    * @param {HttpContext} ctx - The HTTP context.
    * @param {Object} params - The route parameters.
    */
-  async show({ params }: HttpContext) {}
+  // async show({ params }: HttpContext) {}
 
   /**
    * Handles GET requests to /exercices/:id/edit.
@@ -49,7 +51,8 @@ export default class ExercicesController {
    * @param {HttpContext} ctx - The HTTP context.
    * @param {Object} params - The route parameters.
    */
-  async edit({ params }: HttpContext) {}
+
+  // async edit({ params }: HttpContext) {}
 
   /**
    * Handles PUT requests to /exercices/:id.
@@ -59,7 +62,7 @@ export default class ExercicesController {
    * @param {Object} params - The route parameters.
    * @param {Object} request - The HTTP request.
    */
-  async update({ params, request }: HttpContext) {}
+  // async update({ params, request }: HttpContext) {}
 
   /**
    * Handles DELETE requests to /exercices/:id.
@@ -68,5 +71,5 @@ export default class ExercicesController {
    * @param {HttpContext} ctx - The HTTP context.
    * @param {Object} params - The route parameters.
    */
-  async destroy({ params }: HttpContext) {}
+  // async destroy({ params }: HttpContext) {}
 }
