@@ -19,7 +19,7 @@ router.get('/', async ({ response }) => {
 })
 
 const ExercicesController = () => import('#controllers/exercises_controller')
-
+const MediasController = () => import('#controllers/medias_controller')
 router
   .group(() => {
     ///////////////////////// EXERCICES /////////////////////////////
@@ -32,6 +32,18 @@ router
         router.get('/:id', [ExercicesController, 'show'])
       })
       .prefix('/exercices')
+    /////////////////////////////////////////////////////////////////
+
+    ///////////////////////// MEDIAS ////////////////////////////////
+    router
+      .group(() => {
+        router.get('', [MediasController, 'index'])
+        router.post('', [MediasController, 'store'])
+        router.put('/:id', [MediasController, 'update'])
+        router.delete('/:id', [MediasController, 'destroy'])
+        router.get('/:id', [MediasController, 'show'])
+      })
+      .prefix('/medias')
     /////////////////////////////////////////////////////////////////
   })
   .prefix('/api')
