@@ -18,8 +18,20 @@ router.get('/', async ({ response }) => {
   response.send(router.toJSON())
 })
 
-///////////////////////// EXERCICES //////////////////////////
-// @ts-ignore
-const ExercicesController = () => import('#controllers/exercices_controller')
+const ExercicesController = () => import('#controllers/exercises_controller')
 
-router.get('/api/exercices', [ExercicesController, 'index'])
+router
+  .group(() => {
+    ///////////////////////// EXERCICES /////////////////////////////
+    router
+      .group(() => {
+        router.get('', [ExercicesController, 'index'])
+        router.post('', [ExercicesController, 'store'])
+        router.put('/:id', [ExercicesController, 'update'])
+        router.delete('/:id', [ExercicesController, 'destroy'])
+        router.get('/:id', [ExercicesController, 'show'])
+      })
+      .prefix('/exercices')
+    /////////////////////////////////////////////////////////////////
+  })
+  .prefix('/api')

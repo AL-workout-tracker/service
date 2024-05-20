@@ -50,7 +50,7 @@ CREATE TABLE Exercises (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Create Media table
+-- Create Medias table
 CREATE TABLE Media (
     id INT AUTO_INCREMENT PRIMARY KEY,
     exercise_id INT NOT NULL,
