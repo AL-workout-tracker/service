@@ -26,7 +26,6 @@ router
     router.post('register', [UsersController, 'store'])
     router.post('login', [AuthController, 'store'])
 
-
     router.get('/health', async () => {
       return { status: 'ok' }
     })

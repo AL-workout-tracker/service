@@ -33,8 +33,8 @@ server.use([
  * requests with a registered route.
  */
 router.use([
-  () => import('@adonisjs/core/bodyparser_middleware'), 
-  () => import('@adonisjs/auth/initialize_auth_middleware')
+  () => import('@adonisjs/core/bodyparser_middleware'),
+  () => import('@adonisjs/auth/initialize_auth_middleware'),
 ])
 
 /**
@@ -44,5 +44,4 @@ router.use([
 export const middleware = router.named({
   auth: () => import('#middleware/auth_middleware'),
   guest: () => import('#middleware/guest_middleware'),
-
 })
