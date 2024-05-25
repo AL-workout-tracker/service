@@ -7,8 +7,11 @@
 |
 */
 import router from '@adonisjs/core/services/router'
+// import * as fs from 'fs'
 
-///////////////////////// HOME //////////////////////////
+const UsersController = () => import('#controllers/users_controller')
+const AuthController = () => import('#controllers/auth_controller')
+
 /**
  * Handles GET requests to /.
  * This route returns all available routes.
@@ -18,32 +21,18 @@ router.get('/', async ({ response }) => {
   response.send(router.toJSON())
 })
 
-const ExercicesController = () => import('#controllers/exercises_controller')
-const MediasController = () => import('#controllers/medias_controller')
 router
   .group(() => {
-    ///////////////////////// EXERCICES /////////////////////////////
-    router
-      .group(() => {
-        router.get('', [ExercicesController, 'index'])
-        router.post('', [ExercicesController, 'store'])
-        router.put('/:id', [ExercicesController, 'update'])
-        router.delete('/:id', [ExercicesController, 'destroy'])
-        router.get('/:id', [ExercicesController, 'show'])
-      })
-      .prefix('/exercices')
-    /////////////////////////////////////////////////////////////////
+    router.post('register', [UsersController, 'store'])
+    router.post('login', [AuthController, 'store'])
 
-    ///////////////////////// MEDIAS ////////////////////////////////
-    router
-      .group(() => {
-        router.get('', [MediasController, 'index'])
-        router.post('', [MediasController, 'store'])
-        router.put('/:id', [MediasController, 'update'])
-        router.delete('/:id', [MediasController, 'destroy'])
-        router.get('/:id', [MediasController, 'show'])
-      })
-      .prefix('/medias')
-    /////////////////////////////////////////////////////////////////
+
+    router.get('/health', async () => {
+      return { status: 'ok' }
+    })
+    router.get('/version', async () => {
+      // let test = JSON.parse(fs.readFileSync('package.json', 'utf8'))
+      // return { version: test.version }
+    })
   })
   .prefix('/api')
