@@ -1,5 +1,5 @@
-import {DateTime} from 'luxon'
-import {BaseModel, column} from '@adonisjs/lucid/orm'
+import { DateTime } from 'luxon'
+import { BaseModel, column } from '@adonisjs/lucid/orm'
 
 /**
  * Exercises class represents an exercise entity in the database.
@@ -10,21 +10,21 @@ export default class Exercises extends BaseModel {
    * The primary key for the table.
    * @type {number}
    */
-  @column({isPrimary: true})
+  @column({ isPrimary: true })
   declare id: number
 
   /**
    * The creation timestamp.
    * @type {DateTime}
    */
-  @column.dateTime({autoCreate: true})
+  @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
   /**
    * The update timestamp.
    * @type {DateTime}
    */
-  @column.dateTime({autoCreate: true, autoUpdate: true})
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
   /**
@@ -53,11 +53,11 @@ export default class Exercises extends BaseModel {
     try {
       const exercises = await Exercises.all()
       if (exercises.length === 0) {
-        return {message: 'No exercises found', status: 404}
+        return { message: 'No exercises found', status: 404 }
       }
-      return {message: 'Exercises retrieved successfully', objects: exercises, status: 200}
+      return { message: 'Exercises retrieved successfully', objects: exercises, status: 200 }
     } catch (error) {
-      return {message: 'Error retrieving exercises', error: error.message, status: 500}
+      return { message: 'Error retrieving exercises', error: error.message, status: 500 }
     }
   }
 
@@ -71,11 +71,11 @@ export default class Exercises extends BaseModel {
     try {
       const exercise = await Exercises.find(id)
       if (!exercise) {
-        return {message: 'Exercise not found', status: 404}
+        return { message: 'Exercise not found', status: 404 }
       }
-      return {message: 'Exercise retrieved successfully', object: exercise, status: 200}
+      return { message: 'Exercise retrieved successfully', object: exercise, status: 200 }
     } catch (error) {
-      return {message: 'Error retrieving exercise', error: error.message, status: 500}
+      return { message: 'Error retrieving exercise', error: error.message, status: 500 }
     }
   }
 
@@ -99,7 +99,7 @@ export default class Exercises extends BaseModel {
         status: 201,
       }
     } catch (error) {
-      return {message: 'Error creating exercise', error: error.message, status: 500}
+      return { message: 'Error creating exercise', error: error.message, status: 500 }
     }
   }
 
@@ -111,21 +111,21 @@ export default class Exercises extends BaseModel {
    * @param {string} params.description - The new description of the exercise.
    */
   static async updateExercise({
-                                id,
-                                name,
-                                description,
-                              }: {
+    id,
+    name,
+    description,
+  }: {
     id: number
     name?: string
     description?: string
   }): Promise<{ message: string; object?: Exercises; status: number; error?: string }> {
     try {
       const exercise = await Exercises.find(id)
-      if (!exercise) return {message: 'Exercise not found', status: 404}
+      if (!exercise) return { message: 'Exercise not found', status: 404 }
 
       if (name !== undefined) exercise.name = name
       if (description !== undefined) exercise.description = description
-      exercise.updatedAt = DateTime.now()
+      exercise.updatedAt = DateTime.utc()
       await exercise.save()
       return {
         message: 'Exercise updated successfully',
@@ -133,7 +133,7 @@ export default class Exercises extends BaseModel {
         status: 200,
       }
     } catch (error) {
-      return {message: 'Error updating exercise', error: error.message, status: 500}
+      return { message: 'Error updating exercise', error: error.message, status: 500 }
     }
   }
 
@@ -146,11 +146,11 @@ export default class Exercises extends BaseModel {
   ): Promise<{ message: string; object?: Exercises; status: number; error?: string }> {
     try {
       const exercise = await Exercises.find(id)
-      if (!exercise) return {message: 'Exercise not found', status: 404}
+      if (!exercise) return { message: 'Exercise not found', status: 404 }
       await exercise.delete()
-      return {message: 'Exercise deleted successfully', object: exercise, status: 200}
+      return { message: 'Exercise deleted successfully', object: exercise, status: 200 }
     } catch (error) {
-      return {message: 'Error deleting exercise', error: error.message, status: 500}
+      return { message: 'Error deleting exercise', error: error.message, status: 500 }
     }
   }
 }
