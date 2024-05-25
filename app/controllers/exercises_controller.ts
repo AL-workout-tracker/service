@@ -1,5 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
 import Exercises from '#models/exercises'
+import { createExerciseValidator, updateExerciseValidator } from '#validators/exercises'
 
 /**
  * ExercicesController is a class that handles HTTP requests related to exercices.
@@ -13,7 +14,7 @@ export default class ExercicesController {
    * @param {HttpContext} ctx - The HTTP context.
    */
   async index({ response }: HttpContext) {
-    const result = await Exercises.getExercices()
+    const result = await Exercises.getExercises()
     response.status(result.status).json(result)
   }
 
@@ -24,13 +25,12 @@ export default class ExercicesController {
    * @param {HttpContext} ctx - The HTTP context.
    */
   async store({ request, response }: HttpContext) {
-    const { name, description } = request.only(['name', 'description'])
-    const exercice = await Exercises.createExercice(name, description)
-    response.status(201).json({
-      message: 'Exercice created successfully',
-      exercice: exercice,
-      status: 201,
-    })
+    const payload = await request.validateUsing(createExerciseValidator)
+    if ('errors' in payload) {
+      return { message: 'Validation failed', errors: payload.errors, status: 400 }
+    }
+    const result = await Exercises.createExercise(payload.name, payload.description)
+    response.status(result.status).json(result)
   }
 
   /**
@@ -40,13 +40,8 @@ export default class ExercicesController {
    * @param {HttpContext} ctx - The HTTP context.
    */
   async show({ params, response }: HttpContext) {
-    const exercice = await Exercises.getExercice(params.id)
-    if (!exercice) return response.status(404).json({ message: 'Exercice not found', status: 404 })
-    response.status(200).json({
-      message: 'Returning the exercice...',
-      exercice: exercice,
-      status: 200,
-    })
+    const result = await Exercises.getExercise(params.id)
+    response.status(result.status).json(result)
   }
 
   /**
@@ -56,25 +51,32 @@ export default class ExercicesController {
    * @param {HttpContext} ctx - The HTTP context.
    */
   async update({ params, request, response }: HttpContext) {
-    const { name, description } = request.only(['name', 'description'])
-    const result = await Exercises.updateExercice(params.id, name, description)
-    if ('error' in result) return response.status(404).json(result)
-    response.status(200).json({
-      message: 'Exercice updated successfully',
-      exercice: result,
-      status: 200,
+    if (!params.id) return response.status(400).json({ message: 'Missing ID', status: 400 })
+    if (!request.hasBody()) {
+      return response.status(400).json({ message: 'Missing body', status: 400 })
+    }
+    const payload = await request.validateUsing(updateExerciseValidator)
+    if ('errors' in payload) {
+      return { message: 'Validation failed', errors: payload.errors, status: 400 }
+    }
+    if (payload.name === undefined && payload.description === undefined) {
+      return response.status(400).json({ message: 'No data to update', status: 400 })
+    }
+    const result = await Exercises.updateExercise({
+      id: params.id,
+      name: payload.name,
+      description: payload.description,
     })
+    return response.status(result.status).json(result)
   }
 
   /**
    * Handles DELETE requests to /exercices/:id.
    * Deletes an existing exercice.
-   *
-   * @param {HttpContext} ctx - The HTTP context.
    */
   async destroy({ params, response }: HttpContext) {
-    const result = await Exercises.deleteExercice(params.id)
-    if ('error' in result) return response.status(404).json(result)
-    response.status(200).json(result)
+    if (!params.id) return response.status(400).json({ message: 'Missing ID', status: 400 })
+    const result = await Exercises.deleteExercise(params.id)
+    return response.status(result.status).json(result)
   }
 }
