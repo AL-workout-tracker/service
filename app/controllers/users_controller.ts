@@ -6,7 +6,9 @@ export default class UsersController {
   /**
    * Display a list of resource
    */
-  async index({}: HttpContext) {}
+  async index({ response }: HttpContext) {
+    return response.badRequest('Not implemented')
+  }
 
   /**
    * Display form to create a new record
