@@ -1,4 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import User from '#models/user'
+import { createUserValidator } from '#validators/user_validator'
 
 export default class UsersController {
   /**
@@ -14,7 +16,10 @@ export default class UsersController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {}
+  async store({ request }: HttpContext) {
+    const payload = await request.validateUsing(createUserValidator)
+    return await User.create(payload)
+  }
 
   /**
    * Show individual record
