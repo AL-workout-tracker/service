@@ -10,6 +10,7 @@
 import router from '@adonisjs/core/services/router'
 
 import { middleware } from '#start/kernel'
+import * as fs from 'node:fs'
 
 const UsersController = () => import('#controllers/users_controller')
 const AuthController = () => import('#controllers/auth_controller')
@@ -38,8 +39,8 @@ router
       return { status: 'ok' }
     })
     router.get('/version', async () => {
-      // let test = JSON.parse(fs.readFileSync('package.json', 'utf8'))
-      // return { version: test.version }
+      const version = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version
+      return { version: version }
     })
   })
   .prefix('/api')
